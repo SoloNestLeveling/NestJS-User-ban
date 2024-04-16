@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UsersModel } from './entity/users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Repository } from 'typeorm';
+import { RolesEnumType } from './enum/roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -59,6 +60,19 @@ export class UsersService {
         });
 
         return user;
+    };
+
+
+
+    async getUserById(id: number) {
+
+        const user = await this.usersRepository.findOne({
+            where: {
+                id,
+            }
+        });
+
+        return user;
     }
 
 
@@ -66,6 +80,7 @@ export class UsersService {
         const manager = await this.usersRepository.findOne({
             where: {
                 id,
+                role: RolesEnumType.ADMIN
             },
             relations: ['banForms']
         });
@@ -80,5 +95,8 @@ export class UsersService {
         const user = await this.usersRepository.find()
 
         return user;
-    }
+    };
+
+
+
 }

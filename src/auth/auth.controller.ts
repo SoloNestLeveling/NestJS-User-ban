@@ -2,6 +2,7 @@ import { Body, Controller, Post, Headers } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { IsPublic } from 'src/common/decorator/public.decorator';
+import { PublicEnumType } from 'src/common/enum/public.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -9,7 +10,7 @@ export class AuthController {
 
 
   @Post('register/email')
-  @IsPublic()
+  @IsPublic(PublicEnumType.PUBLIC)
   registerUser(
     @Body() dto: CreateUserDto
   ) {
@@ -18,7 +19,7 @@ export class AuthController {
 
 
   @Post('login/email')
-  @IsPublic()
+  @IsPublic(PublicEnumType.PUBLIC)
   loginUser(
     @Headers('authorization') rawToken: string
   ) {

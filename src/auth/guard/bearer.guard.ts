@@ -4,6 +4,7 @@ import { UsersService } from "src/users/users.service";
 import { AuthService } from "../auth.service";
 import { Reflector } from "@nestjs/core";
 import { PUBLIC_KEY } from "src/common/decorator/public.decorator";
+import { PublicEnumType } from "src/common/enum/public.enum";
 
 @Injectable()
 export class BearerTokenGuard implements CanActivate {
@@ -31,9 +32,16 @@ export class BearerTokenGuard implements CanActivate {
 
         if (isPublic) {
             req.isPublic = true;
+        };
+
+
+
+        if (isPublic === PublicEnumType.PUBLIC) {
 
             return true;
         }
+
+
 
         const rawToken = req.headers['authorization'];
 
@@ -64,7 +72,7 @@ export class AccessTokenGuared extends BearerTokenGuard {
 
         const req = context.switchToHttp().getRequest();
 
-        if (req.isPublic) {
+        if (req.isPublic === PublicEnumType.PUBLIC || PublicEnumType.REFRESH) {
             return true;
         }
 

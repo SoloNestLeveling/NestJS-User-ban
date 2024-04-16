@@ -13,11 +13,10 @@ import { AccessTokenGuared } from './auth/guard/bearer.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { RolesGuard } from './users/guard/roles.guard';
-import { BanModel } from './users/entity/ban.entity';
-import { BanMeddleware } from './users/meddleware/ban-user.meddleware';
+import { BanModel } from './users/ban/entity/ban.entity';
 import { PostsModel } from './posts/entity/posts.entity';
-import { LogBanMeddleware } from './users/meddleware/log-ban.meddleware';
-import { BanService } from './users/ban.service';
+import { BanService } from './users/ban/ban.service';
+import { UserBanMeddleware } from './users/ban/meddleware/ban-user.meddleware';
 
 @Module({
   imports: [
@@ -70,9 +69,7 @@ export class AppModule implements NestModule {
 
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(BanMeddleware)
-      .forRoutes({ path: 'ban*', method: RequestMethod.POST })
-      .apply(LogBanMeddleware)
-      .forRoutes({ path: 'auth*', method: RequestMethod.POST })
+      .apply(UserBanMeddleware)
+      .forRoutes({ path: 'auth/login/email', method: RequestMethod.POST })
   }
 }
